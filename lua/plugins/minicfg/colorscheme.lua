@@ -65,3 +65,12 @@ local MiniStatuslineColors = {
 for mode, color in pairs(MiniStatuslineColors.mode_bg_colors) do
   set_hl(0, "MiniStatuslineMode" .. mode, { fg = MiniStatuslineColors.fg_mode, bg = color })
 end
+
+----------------------------
+-- mini.indentscope colors --
+----------------------------
+-- local MiniIndentscopeColors = {
+-- 	fg = "#777777"
+-- }
+-- set_hl(0, "MiniIndentscopeSymbol", { fg = MiniIndentscopeColors.fg })
+-- set_hl(0, "MiniIndentscopeSymbolOff", { fg = MiniIndentscopeColors.fg })

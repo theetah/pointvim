@@ -1,6 +1,22 @@
 local map = vim.keymap.set
 
-require("mini.clue").setup()
+local MiniClue = require("mini.clue")
+MiniClue.setup({
+	triggers = {
+		{ mode = "n", keys = "g"},
+		{ mode = "n", keys = "<leader>"},
+	},
+	clues = {
+		MiniClue.gen_clues.g(),
+		MiniClue.gen_clues.registers(),
+	},
+	window = {
+		delay = 500,
+		config = {
+			width = "auto",
+		},
+	},
+})
 
 -- Command Line
 require("mini.cmdline").setup()
@@ -51,10 +67,21 @@ map("n", "<S-h>", "<CMD>bprevious<CR>", { desc = "previous buffer" })
 map("n", "<leader>bd", "<CMD>bdelete<CR>", { desc = "delete current buffer" })
 
 -- Pickers
-require("mini.pick").setup()
+local MiniPick = require("mini.pick")
+MiniPick.setup()
 
-map("n", "<leader>f", "<CMD>Pick files<CR>", { desc = "File picker" })
-map("n", "<leader>r", "<CMD>Pick oldfiles<CR>", { desc = "Oldfiles picker" })
+-- Allow files picker to change its cwd
+MiniPick.registry.files = function(local_opts)
+	local opts = { source = { cwd = local_opts.cwd } }
+	local_opts.cwd = nil
+	return MiniPick.builtin.files(local_opts, opts)
+end
+
+local config_directory = vim.fn.stdpath("config")
+
+map("n", "<leader>ff", "<CMD>Pick files<CR>", { desc = "File picker" })
+map("n", "<leader>fo", "<CMD>Pick oldfiles<CR>", { desc = "Oldfiles picker" })
+map("n", "<leader>fc", "<CMD>Pick files cwd=\"" ..config_directory.. "\"<CR>", { desc = "Config files picker" })
 -- mini.extra adds many useful pickers.
 require("mini.extra").setup()
 -- note, below mapping might be messy when used in tandem with lazydev.
