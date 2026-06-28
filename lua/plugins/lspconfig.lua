@@ -22,6 +22,11 @@ return {
 			vim.lsp.enable(server)
 			-- vim.lsp.config(server, config)
 		end
+
+		vim.lsp.config["*"] = {
+			capabilities = require("blink.cmp").get_lsp_capabilities(),
+		}
+
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
 			callback = function(event)
